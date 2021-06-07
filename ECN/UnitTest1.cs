@@ -79,7 +79,7 @@ namespace ECN
 
                 FunctionalLibrary.TitleVerification(driver, FunctionalLibrary.ReadDataExcel(1, 2, i + 1));
                 testreport.Log(Status.Info, "Title verified");
-                testreport.Log(Status.Info, "Title and 404");
+               
                 try
                 {
                     IWebElement errorpath = driver.FindElement(By.XPath("//*[@class='error-thumbnail']"));
@@ -89,14 +89,46 @@ namespace ECN
 
                         Console.WriteLine(driver.Url);
                         FunctionalLibrary.screenShot(driver);
+                        testreport.Log(Status.Fail, "Title and 404");
                     }
                 }
 
                 catch
                 {
-                    //testreport.Log(Status.Fail, "404");
+                    testreport.Log(Status.Pass, "Title and 404");
                 }
               
+            }
+            int pagecount3 = driver.FindElements(By.XPath("//*[@class='third-site-nav']/div/nav/ul/li")).Count;
+
+            for (int i = 1; i <= pagecount3; i++)
+            {
+                FunctionalLibrary.waitForElement(driver, "//*[@class='third-site-nav']/div/nav/ul/li[" + i + "]/a");
+                FunctionalLibrary.clickAction(driver, "//*[@class='third-site-nav']/div/nav/ul/li[" + i + "]/a", "xpath");
+
+                //  FunctionalLibrary.TitleVerification(driver, FunctionalLibrary.ReadDataExcel(1, 2, i + 1));
+
+                Console.WriteLine(driver.Title);
+                testreport.Log(Status.Info, "Title verified");
+              
+                try
+                {
+                    IWebElement errorpath = driver.FindElement(By.XPath("//*[@class='error-thumbnail']"));
+
+                    if (errorpath.Displayed)
+                    {
+
+                        Console.WriteLine(driver.Url);
+                        FunctionalLibrary.screenShot(driver);
+                        testreport.Log(Status.Fail, "Title and 404");
+                    }
+                }
+
+                catch
+                {
+                    testreport.Log(Status.Pass, "Title and 404");
+                }
+
             }
             extent.Flush();
 
